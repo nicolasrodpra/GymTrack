@@ -19,6 +19,7 @@ const storage = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    await window.GymTrackProfile?.waitForProfileSync?.();
 
     // --- Referencias UI Preferencias ---
     const btnKg = document.getElementById('btn-unit-kg');

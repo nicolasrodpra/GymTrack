@@ -12,6 +12,7 @@ const storage = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    await window.GymTrackProfile?.waitForProfileSync?.();
 
     // 1. CARGAR HISTORIAL DINÁMICO
     const historyContainer = document.getElementById('history-container');

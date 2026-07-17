@@ -15,7 +15,9 @@ const storage = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await window.GymTrackProfile?.waitForProfileSync?.();
+
     const grid = document.getElementById('routines-grid');
     const modal = document.getElementById('routine-modal');
     const form = document.getElementById('routine-form');

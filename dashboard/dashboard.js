@@ -35,6 +35,8 @@ const storage = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    await window.GymTrackProfile?.waitForProfileSync?.();
+
     const list = document.getElementById('workout-list');
     const modal = document.getElementById('crud-modal');
     const form = document.getElementById('crud-form');

@@ -16,6 +16,8 @@ const storage = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    await window.GymTrackProfile?.waitForProfileSync?.();
+
     
     // UI Elements
     const tbody = document.getElementById('exercises-list');

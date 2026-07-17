@@ -6,6 +6,11 @@ const LOCAL_KEYS = ['profile', 'settings', 'routines', 'exercises', 'workouts'];
 let syncState = null;
 let queuedWrite = null;
 let applyingRemoteData = false;
+let profileReadyResolved = false;
+let resolveProfileReady;
+const profileReady = new Promise((resolve) => {
+    resolveProfileReady = resolve;
+});
 
 function getFirebaseApp(firebaseConfig) {
     if (!firebaseConfig?.apiKey) throw new Error('Falta la configuración de Firebase.');
@@ -192,6 +197,12 @@ function emitProfileUpdate(data) {
     window.dispatchEvent(new CustomEvent('gymtrack:profile-updated', { detail: data }));
 }
 
+function markProfileReady(data = null) {
+    if (profileReadyResolved) return;
+    profileReadyResolved = true;
+    resolveProfileReady(data);
+}
+
 function applyRemoteData(data) {
     applyingRemoteData = true;
     LOCAL_KEYS.forEach((key) => writeLocal(key, data[key]));
@@ -204,6 +215,7 @@ async function writeCurrentData() {
     const data = formatUserData(syncState.user);
     applyRemoteData(data);
     await setDoc(syncState.reference, { ...data, updatedAt: serverTimestamp() });
+    markProfileReady(data);
 }
 
 export function scheduleProfileSync() {
@@ -212,6 +224,10 @@ export function scheduleProfileSync() {
     queuedWrite = window.setTimeout(() => {
         writeCurrentData().catch((error) => window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error })));
     }, 250);
+}
+
+export function waitForProfileSync() {
+    return profileReady;
 }
 
 export function initializeProfileSync(firebaseConfig, user) {
@@ -223,15 +239,19 @@ export function initializeProfileSync(firebaseConfig, user) {
     const reference = doc(database, 'profiles', profileUser.id);
     syncState?.unsubscribe?.();
     syncState = { user: profileUser, reference, unsubscribe: null };
-    applyRemoteData(formatUserData(profileUser));
     syncState.unsubscribe = onSnapshot(reference, (snapshot) => {
         if (snapshot.exists()) {
             const remoteData = snapshot.data();
-            if (remoteData?.profile && remoteData?.settings) applyRemoteData(normalizeRemoteData(remoteData, profileUser));
+            const data = normalizeRemoteData(remoteData, profileUser);
+            applyRemoteData(data);
+            markProfileReady(data);
             return;
         }
         writeCurrentData().catch((error) => window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error })));
-    }, (error) => window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error })));
+    }, (error) => {
+        markProfileReady(formatUserData(profileUser));
+        window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error }));
+    });
 }
 
-window.GymTrackProfile = { formatUserData, scheduleProfileSync };
+window.GymTrackProfile = { formatUserData, scheduleProfileSync, waitForProfileSync };
