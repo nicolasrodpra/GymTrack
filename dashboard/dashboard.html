@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GymTrack - Panel de Control</title>
+    <link rel="stylesheet" href="../app.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="../tailwind-config.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="overflow-x-hidden bg-surface text-on-surface">
+    <!-- SideNavBar -->
+  <aside class="app-sidebar h-screen w-64 fixed left-0 top-0 flex flex-col py-lg px-md hidden md:flex z-50">
+    <div class="mb-xl px-sm">
+        <h1 class="text-headline-md font-headline-md text-primary tracking-tight">GymTrack</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant opacity-70">Elite Performance</p>
+    </div>
+    
+    <nav class="flex-1 space-y-sm">
+        <!-- Dashboard -->
+        <a href="dashboard.html" class="app-nav-link flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium transition-colors duration-200">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md">Dashboard</span>
+        </a>
+        <!-- Rutinas -->
+        <a href="../rutinas/rutinas.html" class="app-nav-link flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium transition-colors duration-200">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span class="font-body-md">Rutinas</span>
+        </a>
+        <!-- Progreso -->
+        <a href="../progreso/progreso.html" class="app-nav-link flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium transition-colors duration-200">
+            <span class="material-symbols-outlined">monitoring</span>
+            <span class="font-body-md">Progreso</span>
+        </a>
+        <!-- Configuración (Añadido) -->
+        <a href="../configuraciones/configuraciones.html" class="app-nav-link flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium transition-colors duration-200">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-body-md">Configuración</span>
+        </a>
+    </nav>
+
+    <div class="mt-auto p-md flex items-center gap-md bg-surface-container-high rounded-xl">
+        <div class="static-avatar w-10 h-10 rounded-full font-label-md"></div>
+        <div class="overflow-hidden">
+            <p class="font-label-md text-on-surface truncate"> </p>
+            <p class="font-label-sm text-on-surface-variant truncate"> </p>
+        </div>
+    </div>
+</aside>
+
+    <!-- TopAppBar -->
+    <header class="app-header fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 z-40 flex justify-between items-center px-lg">
+        <div class="flex items-center gap-md md:hidden">
+            <span class="material-symbols-outlined text-primary">menu</span>
+            <span class="text-headline-md font-headline-md text-primary">GymTrack</span>
+        </div>
+        <h2 class="hidden md:block font-headline-sm text-on-background">Panel de Control</h2>
+        <div class="flex items-center gap-lg">
+            <button class="relative hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+                <span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
+            </button>
+            <button class="hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main app-main pt-24 pb-12 px-md md:px-xl ml-0 md:ml-64 min-h-screen">
+        <div class="max-w-container-max mx-auto">
+            <h1 class="md:hidden font-display-lg-mobile text-on-background mb-lg">Panel de Control</h1>
+            
+            <section class="surface-card rounded-2xl p-lg md:p-xl mb-xl relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/10 blur-3xl"></div>
+                <div class="relative flex flex-col gap-lg lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <span class="inline-flex items-center gap-xs rounded-full bg-primary/10 px-sm py-xs text-label-sm text-primary"><span class="material-symbols-outlined text-[16px]">bolt</span> TU ESPACIO DE ENTRENAMIENTO</span>
+                        <h1 class="mt-md font-display-lg text-on-surface">Entrena con intención.</h1>
+                        <p class="mt-sm max-w-xl text-body-lg text-on-surface-variant">Registra cada sesión, mantén el ritmo y convierte tu constancia en progreso.</p>
+                    </div>
+                    <button id="btn-hero-add" class="primary-button inline-flex items-center justify-center gap-sm rounded-xl bg-primary px-lg py-md font-label-md text-on-primary transition-all"><span class="material-symbols-outlined">add</span> Registrar entrenamiento</button>
+                </div>
+            </section>
+            <section class="grid grid-cols-1 gap-md sm:grid-cols-3 mb-xl">
+                <article class="surface-card metric-card rounded-xl p-lg"><p class="text-label-sm text-on-surface-variant">SESIONES ESTE MES</p><p id="metric-workouts" class="mt-sm text-display-lg text-primary">0</p></article>
+                <article class="surface-card metric-card rounded-xl p-lg"><p class="text-label-sm text-on-surface-variant">MINUTOS ENTRENADOS</p><p id="metric-minutes" class="mt-sm text-display-lg text-on-surface">0</p></article>
+                <article class="surface-card metric-card rounded-xl p-lg"><p class="text-label-sm text-on-surface-variant">PESO TOTAL REGISTRADO</p><p id="metric-calories" class="mt-sm text-display-lg text-on-surface">0</p></article>
+            </section>
+
+            <!-- CRUD Section: Últimos Entrenamientos -->
+            <section class="mt-8">
+                <div class="flex justify-between items-end mb-md">
+                    <h2 class="font-headline-md text-on-background">Últimos Entrenamientos</h2>
+                    <span class="text-primary font-label-md text-label-md cursor-pointer hover:underline" id="btn-clear-all">Borrar Historial</span>
+                </div>
+                
+                <!-- Contenedor Dinámico para el CRUD -->
+                <div id="workout-list" class="space-y-sm">
+                    <!-- Los entrenamientos se renderizarán aquí desde JS -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Botón FAB (Para Crear nuevo registro) -->
+    <button id="btn-add-workout" aria-label="Registrar entrenamiento" class="primary-button fixed bottom-lg right-lg w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50">
+        <span class="material-symbols-outlined text-[32px]">add</span>
+    </button>
+
+    <!-- Modal CRUD (Oculto por defecto) -->
+    <div id="crud-modal" class="hidden fixed inset-0 bg-[#0e150e]/80 backdrop-blur-sm z-[100] flex items-center justify-center px-4">
+        <div class="modal-panel bg-surface-container-high w-full max-w-md p-6 rounded-xl border border-outline-variant shadow-2xl">
+            <h3 id="modal-title" class="text-headline-md text-primary mb-4">Agregar Entrenamiento</h3>
+            <form id="crud-form" class="flex flex-col gap-4">
+                <input type="hidden" id="workout-id">
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Rutina guardada</label>
+                    <select id="workout-routine" required class="form-field">
+                        <option value="">Selecciona una rutina</option>
+                    </select>
+                </div>
+                <div id="selected-routine-summary" class="hidden rounded-lg border border-outline-variant bg-surface-container-low p-md text-label-sm text-on-surface-variant"></div>
+                <div id="workout-weight-fields" class="space-y-sm">
+                    <p class="rounded-lg border border-dashed border-outline-variant p-md text-center text-label-sm text-on-surface-variant">Elige una rutina para registrar los pesos por ejercicio.</p>
+                </div>
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" id="btn-close-modal" class="px-4 py-2 text-on-surface-variant hover:text-on-surface transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-primary text-on-primary rounded-lg font-bold hover:brightness-110 transition-all">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script type="module" src="dashboard.js"></script>
+</html>

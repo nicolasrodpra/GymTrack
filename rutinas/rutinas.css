@@ -1,0 +1,36 @@
+body {
+    background-color: #0e150e;
+    color: #dce5d9;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.gym-card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
+}
+
+.routine-card {
+    background: linear-gradient(145deg, rgba(36, 44, 36, .96), rgba(22, 29, 22, .96));
+    border: 1px solid rgba(134, 149, 133, .18);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .18);
+}
+
+.routine-modal {
+    background: #242c24;
+    border-color: #3d4a3d;
+}
+
+.routine-field {
+    background: #1a221a;
+    border-color: #3d4a3d;
+}
+
+.routine-exercise-row {
+    border: 1px solid rgba(134, 149, 133, .18);
+    background: rgba(14, 21, 14, .42);
+}

@@ -1,0 +1,141 @@
+.login-page {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: #0e150e;
+}
+
+.login-shell {
+    width: min(100%, 440px);
+}
+
+.login-panel {
+    border: 1px solid rgba(134, 149, 133, .24);
+    border-radius: 12px;
+    padding: 40px;
+    background: linear-gradient(145deg, rgba(36, 44, 36, .98), rgba(22, 29, 22, .98));
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .35);
+}
+
+.login-brand {
+    color: #4be277;
+    font-size: 28px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.login-kicker {
+    margin: 6px 0 32px;
+    color: #869585;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.login-panel h1 {
+    margin: 0;
+    color: #dce5d9;
+    font-size: 26px;
+    line-height: 1.2;
+}
+
+.login-intro {
+    margin: 10px 0 28px;
+    color: #bccbb9;
+    font-size: 14px;
+}
+
+#auth-form {
+    display: grid;
+    gap: 10px;
+}
+
+#auth-form label {
+    margin-top: 8px;
+    color: #bccbb9;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#auth-form input {
+    min-height: 46px;
+    border: 1px solid #3d4a3d;
+    border-radius: 8px;
+    padding: 0 13px;
+    background: #1a221a;
+    color: #dce5d9;
+    outline: none;
+}
+
+#auth-form input:focus {
+    border-color: #4be277;
+    box-shadow: 0 0 0 3px rgba(75, 226, 119, .14);
+}
+
+.auth-message {
+    min-height: 20px;
+    margin: 6px 0 0;
+    color: #ffb4ab;
+    font-size: 13px;
+}
+
+.auth-message.is-success {
+    color: #6bff8f;
+}
+
+.auth-submit {
+    min-height: 46px;
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 8px;
+    background: #4be277;
+    color: #003915;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .18s ease, background-color .18s ease, opacity .18s ease;
+}
+
+.auth-submit:hover:not(:disabled) {
+    background: #6bff8f;
+    transform: translateY(-1px);
+}
+
+.auth-submit:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.auth-submit:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.auth-switch {
+    margin: 24px 0 0;
+    color: #bccbb9;
+    font-size: 13px;
+    text-align: center;
+}
+
+.auth-switch button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: #4be277;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.auth-switch button:hover {
+    color: #6bff8f;
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .login-page { padding: 16px; }
+    .login-panel { padding: 28px 22px; }
+}

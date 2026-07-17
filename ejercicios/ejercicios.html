@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GymTrack - Rutina: Push Day</title>
+    <link rel="stylesheet" href="../app.css">
+    <link rel="stylesheet" href="ejercicios.css">
+    <script src="../tailwind-config.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="text-on-surface bg-surface overflow-x-hidden min-h-screen">
+    
+    <!-- SideNavBar -->
+    <aside class="app-sidebar h-screen w-64 fixed left-0 top-0 flex flex-col py-lg px-md hidden md:flex z-50">
+    <div class="mb-xl px-sm">
+        <h1 class="text-headline-md font-headline-md text-primary tracking-tight">GymTrack</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant opacity-70">Elite Performance</p>
+    </div>
+    
+    <nav class="flex-1 space-y-sm">
+        <!-- Dashboard -->
+        <a href="../dashboard/dashboard.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md">Dashboard</span>
+        </a>
+        <!-- Rutinas -->
+        <a href="../rutinas/rutinas.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span class="font-body-md">Rutinas</span>
+        </a>
+        <!-- Progreso -->
+        <a href="../progreso/progreso.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">monitoring</span>
+            <span class="font-body-md">Progreso</span>
+        </a>
+        <!-- Configuración (Añadido) -->
+        <a href="../configuraciones/configuraciones.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-body-md">Configuración</span>
+        </a>
+    </nav>
+
+    <div class="mt-auto p-md flex items-center gap-md bg-surface-container-high rounded-xl">
+        <div class="static-avatar w-10 h-10 rounded-full font-label-md">AG</div>
+        <div class="overflow-hidden">
+            <p class="font-label-md text-on-surface truncate">Alex Guerrero</p>
+            <p class="font-label-sm text-on-surface-variant truncate">Atleta Pro</p>
+        </div>
+    </div>
+</aside>
+    <!-- Main Content Area -->
+    <main class="app-main ml-64 min-h-screen">
+        <!-- TopAppBar -->
+        <header class="app-header fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40 flex justify-between items-center px-lg">
+            <div class="flex items-center gap-sm">
+                <span class="material-symbols-outlined text-primary">fitness_center</span>
+                <h2 class="font-headline-sm text-headline-sm text-primary">Rutinas</h2>
+            </div>
+            <div class="flex items-center gap-md">
+                <button class="p-base rounded-full hover:text-primary transition-colors active:opacity-80">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button class="p-base rounded-full hover:text-primary transition-colors active:opacity-80">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Canvas -->
+        <section class="pt-24 pb-xl px-xl max-w-container-max mx-auto">
+            <!-- Hero Header Section -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xl">
+                <div>
+                    <nav class="flex gap-xs text-on-surface-variant font-label-sm mb-xs opacity-60">
+                        <span>Mis Rutinas</span>
+                        <span>/</span>
+                        <span class="text-primary">Push Day</span>
+                    </nav>
+                    <h3 class="font-display-lg text-display-lg text-on-surface tracking-tight">Rutina: Push Day</h3>
+                    <p class="text-on-surface-variant font-body-md mt-sm max-w-xl">
+                        Enfoque en pectorales, hombros y tríceps. Mantén el tiempo de descanso entre 60-90 segundos para máxima hipertrofia.
+                    </p>
+                </div>
+                <div>
+                    <button id="btn-add-exercise" class="primary-button flex items-center gap-sm bg-primary text-on-primary font-bold py-md px-lg rounded-xl transition-soft active:scale-[0.98] shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined">add_circle</span>
+                        <span class="font-label-md">Agregar ejercicio</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Stats Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+                <div class="surface-card metric-card p-lg rounded-xl flex flex-col gap-sm">
+                    <span class="text-on-surface-variant font-label-sm">Tiempo estimado</span>
+                    <div class="flex items-baseline gap-xs">
+                        <span class="text-headline-md font-headline-md text-primary">75</span>
+                        <span class="text-on-surface-variant font-body-md">min</span>
+                    </div>
+                </div>
+                <div class="surface-card metric-card p-lg rounded-xl flex flex-col gap-sm">
+                    <span class="text-on-surface-variant font-label-sm">Volumen total</span>
+                    <div class="flex items-baseline gap-xs">
+                        <span id="total-volume" class="text-headline-md font-headline-md text-primary">0</span>
+                        <span class="text-on-surface-variant font-body-md">kg</span>
+                    </div>
+                </div>
+                <div class="surface-card metric-card p-lg rounded-xl flex flex-col gap-sm">
+                    <span class="text-on-surface-variant font-label-sm">Dificultad</span>
+                    <div class="flex items-center gap-sm">
+                        <div class="h-2 flex-1 bg-surface-variant rounded-full overflow-hidden">
+                            <div class="h-full w-[80%] bg-primary"></div>
+                        </div>
+                        <span class="text-primary font-bold text-label-md">Alta</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercises Table Container -->
+            <div class="surface-card rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-high/50 border-b border-outline-variant/50">
+                                <th class="px-lg py-md font-label-md text-on-surface-variant uppercase tracking-wider">Ejercicio</th>
+                                <th class="px-lg py-md font-label-md text-on-surface-variant uppercase tracking-wider text-center">Series</th>
+                                <th class="px-lg py-md font-label-md text-on-surface-variant uppercase tracking-wider text-center">Reps</th>
+                                <th class="px-lg py-md font-label-md text-on-surface-variant uppercase tracking-wider text-center">Peso</th>
+                                <th class="px-lg py-md font-label-md text-on-surface-variant uppercase tracking-wider text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <!-- Contenedor Dinámico -->
+                        <tbody id="exercises-list" class="divide-y divide-outline-variant/20">
+                            <!-- Los ejercicios se inyectarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Table Footer -->
+                <div class="px-lg py-md bg-surface-container-high/30 flex justify-between items-center">
+                    <span id="exercise-count" class="text-on-surface-variant text-label-sm">Mostrando 0 ejercicios</span>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-lg">
+                <div class="bg-surface-container-low p-lg rounded-xl border border-outline-variant/30">
+                    <h4 class="font-headline-sm text-on-surface mb-md flex items-center gap-sm">
+                        <span class="material-symbols-outlined text-primary">history_edu</span>
+                        Notas de Entrenamiento
+                    </h4>
+                    <p class="text-on-surface-variant font-body-md italic border-l-2 border-primary pl-md">
+                        "En el press de banca, enfócate en la retracción escapular y una bajada controlada de 2 segundos. No rebotes la barra en el pecho."
+                    </p>
+                </div>
+                <div class="relative rounded-xl overflow-hidden min-h-[200px] border border-outline-variant/30 group">
+                    <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB08b65a-gW5jZD5O8b8FDd8_-ev7eEEo2TfpstTf_LgxJ6nRAeOrwCgwlVyC0sJkTHJLqjQP0HoOcQ-6GIv4W0MGOhSm5uy20RlQ60avzFecw9PJD2ehg3snzZ29-OVrXMtI_z-gnqNMaqzr7s8BVW-X8N_LmD3jVe49EpZiRsCoIUF21SqCEZCBfarf-T7cjPQZZL1_tc9K1G4-Kesq_FoobPwKo3kbIKEJzTIJX-_wvr8pa0Qr5H8nDZAsIUCAzquirAXWT9NQ"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60"></div>
+                    <div class="absolute bottom-md left-md">
+                        <span class="bg-primary text-on-primary px-sm py-xs rounded font-label-sm">CONSEJO PRO</span>
+                        <p class="text-on-surface font-headline-sm mt-xs">Incremento progresivo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FAB for Quick Start -->
+    <button class="fixed bottom-lg right-lg w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-2xl flex items-center justify-center transition-soft hover:scale-110 hover:rotate-12 active:scale-95 group z-50">
+        <span class="material-symbols-outlined text-[32px]">play_arrow</span>
+        <span class="absolute right-16 bg-surface-container-high text-on-surface px-md py-sm rounded-lg text-label-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-xl pointer-events-none border border-outline-variant/30">Iniciar Entrenamiento</span>
+    </button>
+
+    <!-- Modal Form (Oculto por defecto) -->
+    <div id="exercise-modal" class="hidden fixed inset-0 bg-[#0e150e]/80 backdrop-blur-sm z-[100] flex items-center justify-center px-4">
+        <div class="modal-panel bg-[#1a221a] w-full max-w-md p-6 rounded-xl border border-outline-variant/30 shadow-2xl">
+            <h3 id="modal-title" class="text-headline-md text-primary mb-4 font-bold">Agregar Ejercicio</h3>
+            <form id="exercise-form" class="flex flex-col gap-4">
+                <input type="hidden" id="exercise-id">
+                
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Nombre del Ejercicio</label>
+                    <input type="text" id="exercise-name" placeholder="Ej: Press de Banca" required class="w-full mt-1 bg-surface-container border border-[#3d4a3d] rounded-lg p-2 text-on-surface focus:border-primary outline-none">
+                </div>
+                
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Músculo / Equipo</label>
+                    <input type="text" id="exercise-target" placeholder="Ej: Pecho / Barra" required class="w-full mt-1 bg-surface-container border border-[#3d4a3d] rounded-lg p-2 text-on-surface focus:border-primary outline-none">
+                </div>
+                
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <label class="text-label-sm text-on-surface-variant">Series</label>
+                        <input type="number" id="exercise-sets" min="1" required class="w-full mt-1 bg-surface-container border border-[#3d4a3d] rounded-lg p-2 text-on-surface focus:border-primary outline-none">
+                    </div>
+                    <div class="flex-1">
+                        <label class="text-label-sm text-on-surface-variant">Repeticiones</label>
+                        <input type="number" id="exercise-reps" min="1" required class="w-full mt-1 bg-surface-container border border-[#3d4a3d] rounded-lg p-2 text-on-surface focus:border-primary outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Peso (Añade 'kg' o 'BW')</label>
+                    <input type="text" id="exercise-weight" placeholder="Ej: 80kg" required class="w-full mt-1 bg-surface-container border border-[#3d4a3d] rounded-lg p-2 text-on-surface focus:border-primary outline-none">
+                </div>
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" id="btn-close-modal" class="px-4 py-2 text-on-surface-variant hover:text-on-surface transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-primary text-on-primary rounded-lg font-bold hover:brightness-110 transition-all">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="ejercicios.js"></script>
+</body>
+</html>

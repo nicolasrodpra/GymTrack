@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GymTrack - Mis Rutinas</title>
+    <link rel="stylesheet" href="../app.css">
+        <link rel="stylesheet" href="rutinas.css">
+    <script src="../tailwind-config.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="overflow-x-hidden text-on-surface bg-surface">
+    <!-- SideNavBar Anchor -->
+   <aside class="app-sidebar h-screen w-64 fixed left-0 top-0 flex flex-col py-lg px-md hidden md:flex z-50">
+    <div class="mb-xl px-sm">
+        <h1 class="text-headline-md font-headline-md text-primary tracking-tight">GymTrack</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant opacity-70">Elite Performance</p>
+    </div>
+    
+    <nav class="flex-1 space-y-sm">
+        <!-- Dashboard -->
+        <a href="../dashboard/dashboard.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md">Dashboard</span>
+        </a>
+        <!-- Rutinas -->
+        <a href="rutinas.html" class="app-nav-link flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium transition-colors duration-200">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span class="font-body-md">Rutinas</span>
+        </a>
+        <!-- Progreso -->
+        <a href="../progreso/progreso.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">monitoring</span>
+            <span class="font-body-md">Progreso</span>
+        </a>
+        <!-- Configuración (Añadido) -->
+        <a href="../configuraciones/configuraciones.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-body-md">Configuración</span>
+        </a>
+    </nav>
+
+    <div class="mt-auto p-md flex items-center gap-md bg-surface-container-high rounded-xl">
+        <div class="static-avatar w-10 h-10 rounded-full font-label-md">AG</div>
+        <div class="overflow-hidden">
+            <p class="font-label-md text-on-surface truncate">Alex Guerrero</p>
+            <p class="font-label-sm text-on-surface-variant truncate">Atleta Pro</p>
+        </div>
+    </div>
+</aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main ml-64 min-h-screen">
+        <!-- TopAppBar -->
+        <header class="app-header fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40 flex justify-between items-center px-lg">
+            <div class="flex items-center gap-md">
+                <span class="font-headline-sm text-headline-sm text-on-surface">Rutinas de Entrenamiento</span>
+            </div>
+            <div class="flex items-center gap-md">
+                <button class="p-sm text-on-surface-variant hover:text-primary transition-colors active:opacity-80">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button class="p-sm text-on-surface-variant hover:text-primary transition-colors active:opacity-80">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Canvas -->
+        <div class="pt-24 px-xl pb-xl max-w-container-max mx-auto">
+            <!-- Page Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-xl gap-md">
+                <div>
+                    <h2 class="font-display-lg text-display-lg text-on-surface">Mis Rutinas</h2>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant mt-xs">Gestiona tus planes de entrenamiento semanales.</p>
+                </div>
+                <button id="btn-top-add" class="primary-button flex items-center gap-sm bg-primary text-on-primary px-lg py-md rounded-xl font-bold active:scale-[0.98] transition-all">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="font-label-md text-label-md">Nueva Rutina</span>
+                </button>
+            </div>
+
+            <!-- Contenedor Dinámico para las Rutinas (CRUD) -->
+            <div id="routines-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+                <!-- Las tarjetas se insertarán aquí con JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Form (Oculto por defecto) -->
+    <div id="routine-modal" class="hidden fixed inset-0 bg-[#0e150e]/80 backdrop-blur-sm z-[100] flex items-center justify-center px-4">
+        <div class="modal-panel routine-modal max-h-[90vh] w-full max-w-2xl overflow-y-auto p-6 rounded-xl border shadow-2xl">
+            <h3 id="modal-title" class="text-headline-md text-primary mb-4 font-bold">Nueva Rutina</h3>
+            <form id="routine-form" class="flex flex-col gap-4">
+                <input type="hidden" id="routine-id">
+                
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Nombre de la Rutina</label>
+                    <input type="text" id="routine-name" placeholder="Ej: Push Day" required class="routine-field w-full mt-1 border rounded-lg p-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+                </div>
+                
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Enfoque general</label>
+                    <input type="text" id="routine-tag" placeholder="Ej: Hipertrofia" required class="routine-field w-full mt-1 border rounded-lg p-2 text-on-surface focus:border-primary outline-none">
+                </div>
+
+                <div>
+                    <div class="mb-sm flex items-center justify-between gap-md">
+                        <label class="text-label-sm text-on-surface-variant">Ejercicios de la rutina</label>
+                        <button type="button" id="btn-add-routine-exercise" class="inline-flex items-center gap-xs rounded-lg border border-primary/40 px-sm py-xs text-label-sm text-primary hover:bg-primary/10">
+                            <span class="material-symbols-outlined text-[18px]">add</span>
+                            Ejercicio
+                        </button>
+                    </div>
+                    <div id="routine-exercises-list" class="space-y-sm"></div>
+                </div>
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" id="btn-close-modal" class="px-4 py-2 text-on-surface-variant hover:text-on-surface transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold hover:brightness-110 transition-all">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="rutinas.js"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GymTrack - Configuración</title>
+    <link rel="stylesheet" href="../app.css">
+    <link rel="stylesheet" href="configuraciones.css">
+    <script src="../tailwind-config.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body id="app-body" class="bg-surface text-on-surface transition-all duration-300 overflow-x-hidden">
+    <!-- SideNavBar -->
+   <aside class="app-sidebar h-screen w-64 fixed left-0 top-0 flex flex-col py-lg px-md hidden md:flex z-50">
+    <div class="mb-xl px-sm">
+        <h1 class="text-headline-md font-headline-md text-primary tracking-tight">GymTrack</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant opacity-70">Elite Performance</p>
+    </div>
+    
+    <nav class="flex-1 space-y-sm">
+        <!-- Dashboard -->
+        <a href="../dashboard/dashboard.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md">Dashboard</span>
+        </a>
+        <!-- Rutinas -->
+        <a href="../rutinas/rutinas.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span class="font-body-md">Rutinas</span>
+        </a>
+        <!-- Progreso -->
+        <a href="../progreso/progreso.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">monitoring</span>
+            <span class="font-body-md">Progreso</span>
+        </a>
+        <!-- Configuración (Añadido) -->
+        <a href="../configuraciones/configuraciones.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-body-md">Configuración</span>
+        </a>
+    </nav>
+
+    <div class="mt-auto p-md flex items-center gap-md bg-surface-container-high rounded-xl">
+        <div class="static-avatar w-10 h-10 rounded-full font-label-md">AG</div>
+        <div class="overflow-hidden">
+            <p id="sidebar-name" class="font-label-md text-on-surface truncate">Alex Guerrero</p>
+            <p id="sidebar-title" class="font-label-sm text-on-surface-variant truncate">Atleta Pro</p>
+        </div>
+    </div>
+</aside>
+
+    <!-- TopAppBar -->
+    <header class="app-header fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40">
+        <div class="flex justify-between items-center px-lg w-full h-full">
+            <h2 class="text-headline-sm font-headline-sm text-primary">Configuración</h2>
+            <div class="flex items-center gap-lg">
+                <button class="text-on-surface-variant hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button class="text-on-surface-variant hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Canvas -->
+    <main class="app-main ml-64 pt-24 pb-xl px-lg max-w-screen-xl mx-auto">
+        <section class="surface-card rounded-2xl p-lg mb-xl flex flex-col gap-sm md:flex-row md:items-center md:justify-between">
+            <div><p class="text-label-sm text-primary">ESPACIO PERSONAL</p><h1 class="mt-xs text-headline-md text-on-surface">Ajusta GymTrack a tu ritmo.</h1><p class="mt-xs text-on-surface-variant">Gestiona tu perfil, preferencias y experiencia de entrenamiento.</p></div>
+            <span class="material-symbols-outlined text-primary text-5xl">tune</span>
+        </section>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+            
+            <!-- Profile Section -->
+            <section class="md:col-span-8">
+                <div class="card-surface p-lg rounded-xl flex flex-col md:flex-row items-center gap-lg">
+                    <div class="static-avatar h-24 w-24 rounded-full text-headline-md font-bold">AG</div>
+                    <div class="flex-1 text-center md:text-left overflow-hidden">
+                        <h3 id="display-name" class="font-headline-md text-on-surface truncate">Alex Rivera</h3>
+                        <p id="display-email" class="font-body-md text-on-surface-variant mb-md truncate">alex.rivera_performance@gymtrack.com</p>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-sm">
+                            <span class="bg-primary-container text-on-primary-container font-label-sm px-md py-xs rounded-full">PRO MEMBER</span>
+                            <span class="bg-surface-container-highest text-on-surface-variant font-label-sm px-md py-xs rounded-full">Since 2023</span>
+                        </div>
+                    </div>
+                    <!-- Botón Editar Perfil Principal -->
+                    <button id="btn-edit-profile" class="bg-primary hover:bg-primary/90 text-on-primary font-label-md px-lg py-sm rounded-xl transition-all flex items-center gap-xs">
+                        <span class="material-symbols-outlined text-[18px]">edit</span>
+                        Editar Perfil
+                    </button>
+                </div>
+            </section>
+
+            <!-- Subscription Badge -->
+            <section class="md:col-span-4">
+                <div class="card-surface p-lg rounded-xl h-full flex flex-col justify-between border-primary/30 relative overflow-hidden">
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
+                    <div>
+                        <div class="flex items-center gap-sm mb-sm text-primary">
+                            <span class="material-symbols-outlined">verified</span>
+                            <span class="font-label-md uppercase tracking-wider">Plan Actual</span>
+                        </div>
+                        <h4 class="font-headline-sm text-on-surface">Premium Pro</h4>
+                        <p class="font-label-sm text-on-surface-variant mt-xs">Acceso total a rutinas de élite y analítica avanzada.</p>
+                    </div>
+                    <div class="mt-lg">
+                        <button class="w-full py-sm rounded-lg border border-primary text-primary font-label-md hover:bg-primary/10 transition-colors">
+                            Ver Detalles de Pago
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Preferences -->
+            <div class="md:col-span-6 space-y-lg">
+                <div class="card-surface p-lg rounded-xl">
+                    <div class="flex items-center gap-md mb-lg">
+                        <span class="material-symbols-outlined text-primary">timer</span>
+                        <h3 class="font-headline-sm">Preferencias de Entrenamiento</h3>
+                    </div>
+                    <div class="space-y-lg">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-label-md text-on-surface">Unidades de Peso</p>
+                                <p class="font-label-sm text-on-surface-variant">Cambiar entre kg y lb</p>
+                            </div>
+                            <div class="flex bg-surface-container rounded-lg p-1 border border-outline-variant">
+                                <button id="btn-unit-kg" class="px-md py-1 rounded-md font-label-md transition-colors bg-primary text-on-primary">kg</button>
+                                <button id="btn-unit-lb" class="px-md py-1 rounded-md font-label-md transition-colors text-on-surface-variant hover:text-on-surface">lb</button>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-label-md text-on-surface">Descanso por Defecto</p>
+                                <p class="font-label-sm text-on-surface-variant">Temporizador entre series</p>
+                            </div>
+                            <select id="select-rest" class="bg-surface-container border-outline-variant text-on-surface rounded-lg font-label-md px-md py-1 focus:ring-primary focus:border-primary outline-none">
+                                <option value="60s">60s</option>
+                                <option value="90s" selected>90s</option>
+                                <option value="120s">120s</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-label-md text-on-surface">Notificaciones Sonoras</p>
+                                <p class="font-label-sm text-on-surface-variant">Sonido al finalizar el descanso</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input id="toggle-sound" type="checkbox" checked class="sr-only peer"/>
+                                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Account -->
+                <div class="card-surface p-lg rounded-xl">
+                    <div class="flex items-center gap-md mb-lg">
+                        <span class="material-symbols-outlined text-primary">security</span>
+                        <h3 class="font-headline-sm">Seguridad y Cuenta</h3>
+                    </div>
+                    <div class="space-y-md">
+                        <button class="w-full flex justify-between items-center p-md rounded-lg hover:bg-surface-variant transition-colors group">
+                            <div class="flex items-center gap-md">
+                                <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">lock</span>
+                                <span class="font-body-md">Cambiar Contraseña</span>
+                            </div>
+                            <span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+                        </button>
+                        <div class="flex justify-between items-center p-md">
+                            <div class="flex items-center gap-md">
+                                <span class="material-symbols-outlined text-on-surface-variant">public</span>
+                                <div>
+                                    <p class="font-body-md text-on-surface">Perfil Público</p>
+                                    <p class="font-label-sm text-on-surface-variant">Otros atletas pueden ver tu progreso</p>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input id="toggle-public" type="checkbox" class="sr-only peer"/>
+                                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-6">
+                <!-- Acerca de la app -->
+                <div class="card-surface p-lg rounded-xl">
+                    <div class="flex items-center gap-md mb-lg">
+                        <span class="material-symbols-outlined text-primary">info</span>
+                        <h3 class="font-headline-sm">Acerca de la App</h3>
+                    </div>
+                    <div class="space-y-md">
+                        <div class="flex justify-between items-center p-sm">
+                            <p class="font-body-md text-on-surface">Versión</p>
+                            <span class="font-label-md text-on-surface-variant">2.4.1 (Build 402)</span>
+                        </div>
+                        <div class="pt-lg border-t border-outline-variant/30">
+                            <button id="btn-logout" class="w-full flex items-center justify-center gap-md py-md rounded-xl text-error bg-error-container/10 border border-error/20 hover:bg-error-container/20 transition-all">
+                                <span class="material-symbols-outlined">logout</span>
+                                <span class="font-label-md font-bold">Cerrar Sesión</span>
+                            </button>
+                            <p id="logout-email-text" class="text-center font-label-sm text-on-surface-variant mt-md opacity-50">Logueado como alex.rivera</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Editar Perfil (Oculto) -->
+    <div id="profile-modal" class="hidden fixed inset-0 bg-[#0e150e]/80 backdrop-blur-sm z-[100] flex items-center justify-center px-4">
+        <div class="modal-panel bg-surface-container-high w-full max-w-md p-6 rounded-xl border border-outline-variant shadow-2xl">
+            <h3 class="text-headline-md text-primary mb-4 font-bold flex items-center gap-sm">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                Editar Perfil
+            </h3>
+            <form id="profile-form" class="flex flex-col gap-4">
+                
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Nombre Completo</label>
+                    <input type="text" id="input-profile-name" required class="w-full mt-1 bg-surface-container border border-outline-variant rounded-lg p-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+                </div>
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Correo Electrónico</label>
+                    <input type="email" id="input-profile-email" required class="w-full mt-1 bg-surface-container border border-outline-variant rounded-lg p-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+                </div>
+                <div>
+                    <label class="text-label-sm text-on-surface-variant">Nivel / Título</label>
+                    <input type="text" id="input-profile-title" required class="w-full mt-1 bg-surface-container border border-outline-variant rounded-lg p-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+                </div>
+                
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" id="btn-close-profile" class="px-4 py-2 text-on-surface-variant hover:text-on-surface transition-colors">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-primary text-on-primary rounded-lg font-bold hover:brightness-110 transition-all">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="configuraciones.js"></script>
+</body>
+</html>

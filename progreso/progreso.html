@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>GymTrack - Progreso</title>
+    <!-- Asumiendo que progreso.css tiene los estilos de las stat-cards y scrollbar -->
+    <link rel="stylesheet" href="../app.css">
+    <link rel="stylesheet" href="progreso.css">
+    <script src="../tailwind-config.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="flex min-h-screen bg-surface text-on-surface overflow-x-hidden">
+    
+    <!-- SideNavBar -->
+<aside class="app-sidebar h-screen w-64 fixed left-0 top-0 flex flex-col py-lg px-md hidden md:flex z-50">
+    <div class="mb-xl px-sm">
+        <h1 class="text-headline-md font-headline-md text-primary tracking-tight">GymTrack</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant opacity-70">Elite Performance</p>
+    </div>
+    
+    <nav class="flex-1 space-y-sm">
+        <!-- Dashboard -->
+        <a href="../dashboard/dashboard.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-body-md">Dashboard</span>
+        </a>
+        <!-- Rutinas -->
+        <a href="../rutinas/rutinas.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span class="font-body-md">Rutinas</span>
+        </a>
+        <!-- Progreso -->
+        <a href="progreso.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">monitoring</span>
+            <span class="font-body-md">Progreso</span>
+        </a>
+        <!-- Configuración (Añadido) -->
+        <a href="../configuraciones/configuraciones.html" class="flex items-center gap-md p-md rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant transition-colors duration-200">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="font-body-md">Configuración</span>
+        </a>
+    </nav>
+
+    <div class="mt-auto p-md flex items-center gap-md bg-surface-container-high rounded-xl">
+        <div class="static-avatar w-10 h-10 rounded-full font-label-md">AG</div>
+        <div class="overflow-hidden">
+            <p class="font-label-md text-on-surface truncate">Alex Guerrero</p>
+            <p class="font-label-sm text-on-surface-variant truncate">Atleta Pro</p>
+        </div>
+    </div>
+</aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main ml-64 flex-1 relative min-h-screen">
+        <!-- TopAppBar -->
+        <header class="app-header fixed top-0 right-0 w-[calc(100%-16rem)] h-16 flex justify-between items-center px-lg z-40">
+            <div class="flex items-center">
+                <h2 class="text-headline-sm font-headline-sm text-primary">Progreso Personal</h2>
+            </div>
+            <div class="flex items-center gap-lg">
+                <button class="text-on-surface-variant hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button class="text-on-surface-variant hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">account_circle</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content Canvas -->
+        <section class="mt-16 p-lg md:p-xl max-w-container-max mx-auto">
+            <div class="surface-card rounded-2xl p-lg mb-xl flex flex-col gap-sm md:flex-row md:items-center md:justify-between">
+                <div><p class="text-label-sm text-primary">ANALÍTICA PERSONAL</p><h1 class="mt-xs text-headline-md text-on-surface">Tu progreso, en contexto.</h1><p class="mt-xs text-on-surface-variant">Revisa tu consistencia y ajusta tu entrenamiento con datos claros.</p></div>
+                <span class="material-symbols-outlined text-primary text-5xl">monitoring</span>
+            </div>
+            <div class="grid grid-cols-12 gap-lg mt-md">
+                
+                <!-- Historial (izquierda/centro) -->
+                <div class="col-span-12 lg:col-span-7 space-y-md">
+                    <div class="flex justify-between items-end mb-sm">
+                        <h3 class="font-headline-md text-headline-md text-on-surface">Historial de Entrenamientos</h3>
+                        <button class="text-primary text-label-md hover:underline">Ver todo</button>
+                    </div>
+                    
+                    <!-- CONTENEDOR DEL HISTORIAL (Con ID añadido para el JS) -->
+                    <div class="stat-card rounded-xl overflow-hidden">
+                        <div id="history-container" class="p-0">
+                            <!-- Si JS falla, muestra esto. Si JS funciona, lo reemplazará -->
+                            <p class="p-md text-center text-on-surface-variant">Cargando historial...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estadísticas (derecha) -->
+                <div class="col-span-12 lg:col-span-5 space-y-lg">
+                    <h3 class="font-headline-md text-headline-md text-on-surface">Métricas Globales</h3>
+                    
+                    <div class="stat-card rounded-xl p-lg flex flex-col gap-lg border-primary/20 border-2">
+                        <div class="flex items-center gap-md">
+                            <div class="bg-primary text-on-primary p-md rounded-xl">
+                                <span class="material-symbols-outlined text-headline-md" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                            </div>
+                            <div>
+                                <p class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Total Entrenamientos</p>
+                                <p class="font-display-lg text-display-lg text-primary">124</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-md pt-md border-t border-outline-variant">
+                            <div>
+                                <div class="flex items-center gap-xs mb-xs">
+                                    <span class="material-symbols-outlined text-primary text-[18px]">list_alt</span>
+                                    <p class="font-label-sm text-label-sm text-outline">Ejercicios</p>
+                                </div>
+                                <p class="font-headline-md text-headline-md text-on-surface">42</p>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-xs mb-xs">
+                                    <span class="material-symbols-outlined text-primary text-[18px]">fitness_center</span>
+                                    <p class="font-label-sm text-label-sm text-outline">Peso Máx.</p>
+                                </div>
+                                <p class="font-headline-md text-headline-md text-on-surface">120 <span class="text-body-md font-normal text-outline">kg</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-surface-container-low p-md rounded-lg">
+                            <div class="flex justify-between items-center mb-sm">
+                                <span class="text-label-md text-on-surface-variant">Progreso del Mes</span>
+                                <span class="text-label-md text-primary font-bold">+12%</span>
+                            </div>
+                            <div class="w-full bg-outline-variant h-2 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full rounded-full w-[78%]"></div>
+                            </div>
+                        </div>
+                  
+                    </div>
+
+                    <!-- Achievements/Badges -->
+                    <div class="grid grid-cols-2 gap-md">
+                        <div class="stat-card p-md rounded-xl flex flex-col items-center text-center gap-sm">
+                            <span class="material-symbols-outlined text-primary text-headline-md" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+                            <span class="text-label-sm text-outline">Racha</span>
+                            <span class="text-headline-sm font-bold text-on-surface">15 Días</span>
+                        </div>
+                        <div class="stat-card p-md rounded-xl flex flex-col items-center text-center gap-sm">
+                            <span class="material-symbols-outlined text-secondary text-headline-md" style="font-variation-settings: 'FILL' 1;">timer</span>
+                            <span class="text-label-sm text-outline">Tiempo Total</span>
+                            <span class="text-headline-sm font-bold text-on-surface">86h</span>
+                        </div>
+                    </div>
+
+                    <!-- Muscle Distribution Card -->
+                    <div class="stat-card rounded-xl p-lg">
+                        <h4 class="font-label-md text-label-md text-on-surface mb-md">Enfoque Muscular (Semanas)</h4>
+                        <div class="space-y-sm">
+                            <div class="flex items-center gap-md">
+                                <span class="w-16 text-label-sm text-outline">Pecho</span>
+                                <div class="flex-1 h-1.5 bg-outline-variant rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full w-[85%] progress-bar-animate"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <span class="w-16 text-label-sm text-outline">Espalda</span>
+                                <div class="flex-1 h-1.5 bg-outline-variant rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full w-[60%] progress-bar-animate"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <span class="w-16 text-label-sm text-outline">Pierna</span>
+                                <div class="flex-1 h-1.5 bg-outline-variant rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full w-[95%] progress-bar-animate"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <span class="w-16 text-label-sm text-outline">Brazos</span>
+                                <div class="flex-1 h-1.5 bg-outline-variant rounded-full overflow-hidden">
+                                    <div class="bg-primary h-full w-[40%] progress-bar-animate"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="progreso.js"></script>
+</body>
+</html>
