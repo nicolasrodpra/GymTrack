@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-static.js",
-    "start": "node server.js",
-    "check": "node --check server.js && node --check main.js && node --check profile-sync.js && node --check dashboard/dashboard.js && node --check login/login.js && node --check rutinas/rutinas.js && node --check ejercicios/ejercicios.js && node --check progreso/progreso.js && node --check configuraciones/configuraciones.js"
+    "start": "node local-server.js",
+    "check": "node --check local-server.js && node --check main.js && node --check profile-sync.js && node --check dashboard/dashboard.js && node --check login/login.js && node --check rutinas/rutinas.js && node --check ejercicios/ejercicios.js && node --check progreso/progreso.js && node --check configuraciones/configuraciones.js"
   }
 }
