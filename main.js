@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const firebaseUser = await getFirebaseUser(GYMTRACK_CONFIG.firebaseConfig);
         if (isLoginView) {
-            if (firebaseUser) window.location.assign('/dashboard/dashboard.html');
             return;
         }
         if (!firebaseUser) {

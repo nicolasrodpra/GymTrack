@@ -1,5 +1,5 @@
 import { GYMTRACK_CONFIG } from '../main.js';
-import { authenticateWithFirebase } from '../profile-sync.js';
+import { authenticateWithFirebase, getFirebaseUser, signOutFromFirebase } from '../profile-sync.js';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -11,6 +11,10 @@ const submitButton = document.getElementById('submit-auth');
 const modeButton = document.getElementById('toggle-mode');
 const title = document.getElementById('login-title');
 const intro = document.querySelector('.login-intro');
+const activeSession = document.getElementById('active-session');
+const activeSessionEmail = document.getElementById('active-session-email');
+const continueSession = document.getElementById('continue-session');
+const logoutSession = document.getElementById('logout-session');
 let mode = 'login';
 
 function setMessage(text = '', success = false) {
@@ -65,3 +69,27 @@ modeButton.addEventListener('click', () => {
     mode = mode === 'login' ? 'register' : 'login';
     updateMode();
 });
+
+continueSession.addEventListener('click', () => {
+    window.location.assign('../dashboard/dashboard.html');
+});
+
+logoutSession.addEventListener('click', async () => {
+    logoutSession.disabled = true;
+    try {
+        await signOutFromFirebase(GYMTRACK_CONFIG.firebaseConfig);
+        activeSession.classList.add('hidden');
+        emailInput.focus();
+        setMessage('Ahora puedes iniciar sesiÃ³n con otro correo.', true);
+    } catch {
+        setMessage('No se pudo cerrar la sesiÃ³n actual.');
+    } finally {
+        logoutSession.disabled = false;
+    }
+});
+
+getFirebaseUser(GYMTRACK_CONFIG.firebaseConfig).then((user) => {
+    if (!user) return;
+    activeSessionEmail.textContent = user.email || 'tu cuenta actual';
+    activeSession.classList.remove('hidden');
+}).catch(() => {});

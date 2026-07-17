@@ -46,6 +46,49 @@
     font-size: 14px;
 }
 
+.active-session {
+    display: grid;
+    gap: 12px;
+    margin: 0 0 22px;
+    border: 1px solid rgba(75, 226, 119, .24);
+    border-radius: 10px;
+    padding: 14px;
+    background: rgba(75, 226, 119, .08);
+    color: #dce5d9;
+    font-size: 13px;
+}
+
+.active-session.hidden {
+    display: none;
+}
+
+.active-session p {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.active-session-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.active-session-actions button {
+    min-height: 36px;
+    border: 1px solid rgba(75, 226, 119, .32);
+    border-radius: 8px;
+    padding: 0 12px;
+    background: transparent;
+    color: #6bff8f;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.active-session-actions button:first-child {
+    background: #4be277;
+    color: #003915;
+}
+
 #auth-form {
     display: grid;
     gap: 10px;

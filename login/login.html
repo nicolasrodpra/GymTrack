@@ -16,6 +16,13 @@
             <p class="login-kicker">ELITE PERFORMANCE</p>
             <h1 id="login-title">Bienvenido de nuevo</h1>
             <p class="login-intro">Ingresa para continuar con tus entrenamientos.</p>
+            <div id="active-session" class="active-session hidden">
+                <p>Ya hay una sesiÃ³n activa con <strong id="active-session-email"></strong>.</p>
+                <div class="active-session-actions">
+                    <button id="continue-session" type="button">Continuar</button>
+                    <button id="logout-session" type="button">Usar otro correo</button>
+                </div>
+            </div>
             <form id="auth-form" novalidate>
                 <label for="email">Correo electrónico</label>
                 <input id="email" name="email" type="email" autocomplete="email" placeholder="tu@correo.com" required>
