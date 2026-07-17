@@ -246,8 +246,9 @@ function updateProfileUi(profile) {
     document.querySelectorAll('[data-profile-email]').forEach((element) => { element.textContent = safeProfile.email; });
     document.querySelectorAll('[data-profile-avatar]').forEach((element) => { element.textContent = safeProfile.initials; });
     document.querySelectorAll('.app-sidebar .mt-auto').forEach((block) => {
-        block.querySelector('.font-label-md')?.replaceChildren(document.createTextNode(safeProfile.name));
-        block.querySelector('.font-label-sm')?.replaceChildren(document.createTextNode(safeProfile.title));
+        const profileText = block.querySelector('.overflow-hidden');
+        profileText?.querySelector('.font-label-md')?.replaceChildren(document.createTextNode(safeProfile.name));
+        profileText?.querySelector('.font-label-sm')?.replaceChildren(document.createTextNode(safeProfile.title));
     });
     document.querySelectorAll('.static-avatar').forEach((element) => { element.textContent = safeProfile.initials; });
     document.querySelectorAll('#display-name, #sidebar-name').forEach((element) => { element.textContent = safeProfile.name; });
