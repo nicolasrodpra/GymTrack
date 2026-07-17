@@ -188,6 +188,26 @@ textarea:focus {
     border: 1px solid rgba(75, 226, 119, .24);
     background: linear-gradient(145deg, rgba(75, 226, 119, .18), rgba(36, 44, 36, .92));
     color: #6bff8f;
+    line-height: 1;
+    overflow: hidden;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.app-sidebar .mt-auto > div:last-child,
+#display-name,
+#display-email,
+[data-profile-name],
+[data-profile-email],
+[data-profile-title] {
+    min-width: 0;
+    max-width: 100%;
+}
+
+#display-name,
+#display-email,
+[data-profile-email] {
+    overflow-wrap: anywhere;
 }
 
 .form-field {

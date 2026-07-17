@@ -1,6 +1,6 @@
 import { getApp, getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
-import { doc, getFirestore, onSnapshot, serverTimestamp, setDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 const LOCAL_KEYS = ['profile', 'settings', 'routines', 'exercises', 'workouts'];
 let syncState = null;
@@ -22,6 +22,11 @@ export async function authenticateWithFirebase(firebaseConfig, email, password, 
     const credential = mode === 'register'
         ? await createUserWithEmailAndPassword(auth, email, password)
         : await signInWithEmailAndPassword(auth, email, password);
+    try {
+        await ensureUserProfileDocument(firebaseConfig, credential.user);
+    } catch (error) {
+        dispatchSyncError(error);
+    }
     return credential.user;
 }
 
@@ -55,6 +60,10 @@ function writeLocal(key, value) {
 function readArray(key) {
     const value = readLocal(key, []);
     return Array.isArray(value) ? value : [];
+}
+
+function hasOwn(object, key) {
+    return Object.prototype.hasOwnProperty.call(object || {}, key);
 }
 
 function cleanText(value, fallback = '') {
@@ -156,10 +165,34 @@ export function formatUserData(user) {
     };
 }
 
+function getInitialUserData(user) {
+    const name = cleanText(user?.displayName, cleanText(user?.email?.split('@')[0], 'Usuario'));
+    const email = cleanEmail(user?.email);
+    return {
+        schemaVersion: 1,
+        profile: {
+            name,
+            email,
+            title: 'Atleta Pro',
+            initials: initials(name)
+        },
+        settings: {
+            unit: 'kg',
+            restTime: '90s',
+            sound: true,
+            public: false
+        },
+        routines: [],
+        exercises: [],
+        workouts: []
+    };
+}
+
 function normalizeRemoteData(data, user) {
     const sourceProfile = data?.profile || {};
     const sourceSettings = data?.settings || {};
     const name = cleanText(sourceProfile.name, cleanText(user?.email?.split('@')[0], 'Usuario'));
+    const localFallback = formatUserData(user);
     return {
         schemaVersion: 1,
         profile: {
@@ -174,27 +207,42 @@ function normalizeRemoteData(data, user) {
             sound: Boolean(sourceSettings.sound ?? true),
             public: Boolean(sourceSettings.public ?? false)
         },
-        routines: Array.isArray(data?.routines) ? data.routines.map(normalizeRoutine) : [],
-        exercises: Array.isArray(data?.exercises) ? data.exercises.map(normalizeExercise) : [],
-        workouts: Array.isArray(data?.workouts) ? data.workouts.map(normalizeWorkout) : []
+        routines: hasOwn(data, 'routines') && Array.isArray(data?.routines) ? data.routines.map(normalizeRoutine) : localFallback.routines,
+        exercises: hasOwn(data, 'exercises') && Array.isArray(data?.exercises) ? data.exercises.map(normalizeExercise) : localFallback.exercises,
+        workouts: hasOwn(data, 'workouts') && Array.isArray(data?.workouts) ? data.workouts.map(normalizeWorkout) : localFallback.workouts
     };
 }
 
 function updateProfileUi(profile) {
-    document.querySelectorAll('[data-profile-name]').forEach((element) => { element.textContent = profile.name; });
-    document.querySelectorAll('[data-profile-title]').forEach((element) => { element.textContent = profile.title; });
-    document.querySelectorAll('[data-profile-email]').forEach((element) => { element.textContent = profile.email; });
-    document.querySelectorAll('[data-profile-avatar]').forEach((element) => { element.textContent = profile.initials; });
-    document.querySelectorAll('.app-sidebar p.font-label-md').forEach((element) => { element.textContent = profile.name; });
-    document.querySelectorAll('.app-sidebar p.font-label-sm').forEach((element) => { element.textContent = profile.title; });
-    document.querySelectorAll('.static-avatar').forEach((element) => { element.textContent = profile.initials; });
-    document.querySelectorAll('#display-name').forEach((element) => { element.textContent = profile.name; });
-    document.querySelectorAll('#display-email').forEach((element) => { element.textContent = profile.email; });
+    const safeProfile = {
+        name: cleanText(profile?.name, 'Usuario'),
+        email: cleanEmail(profile?.email, 'usuario@gymtrack.app'),
+        title: cleanText(profile?.title, 'Atleta Pro'),
+        initials: cleanText(profile?.initials, initials(profile?.name))
+    };
+    document.querySelectorAll('[data-profile-name]').forEach((element) => { element.textContent = safeProfile.name; });
+    document.querySelectorAll('[data-profile-title]').forEach((element) => { element.textContent = safeProfile.title; });
+    document.querySelectorAll('[data-profile-email]').forEach((element) => { element.textContent = safeProfile.email; });
+    document.querySelectorAll('[data-profile-avatar]').forEach((element) => { element.textContent = safeProfile.initials; });
+    document.querySelectorAll('.app-sidebar .mt-auto').forEach((block) => {
+        block.querySelector('.font-label-md')?.replaceChildren(document.createTextNode(safeProfile.name));
+        block.querySelector('.font-label-sm')?.replaceChildren(document.createTextNode(safeProfile.title));
+    });
+    document.querySelectorAll('.static-avatar').forEach((element) => { element.textContent = safeProfile.initials; });
+    document.querySelectorAll('#display-name, #sidebar-name').forEach((element) => { element.textContent = safeProfile.name; });
+    document.querySelectorAll('#display-email').forEach((element) => { element.textContent = safeProfile.email; });
+    document.querySelectorAll('#sidebar-title').forEach((element) => { element.textContent = safeProfile.title; });
+    document.querySelectorAll('#logout-email-text').forEach((element) => { element.textContent = `Logueado como ${safeProfile.email.split('@')[0]}`; });
 }
 
 function emitProfileUpdate(data) {
     updateProfileUi(data.profile);
     window.dispatchEvent(new CustomEvent('gymtrack:profile-updated', { detail: data }));
+}
+
+function dispatchSyncError(error) {
+    console.error('GymTrack sync error:', error);
+    window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error }));
 }
 
 function markProfileReady(data = null) {
@@ -214,7 +262,7 @@ async function writeCurrentData() {
     if (!syncState || applyingRemoteData) return;
     const data = formatUserData(syncState.user);
     applyRemoteData(data);
-    await setDoc(syncState.reference, { ...data, updatedAt: serverTimestamp() });
+    await setDoc(syncState.reference, { ...data, updatedAt: serverTimestamp() }, { merge: true });
     markProfileReady(data);
 }
 
@@ -222,12 +270,43 @@ export function scheduleProfileSync() {
     if (!syncState || applyingRemoteData) return;
     clearTimeout(queuedWrite);
     queuedWrite = window.setTimeout(() => {
-        writeCurrentData().catch((error) => window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error })));
+        writeCurrentData().catch(dispatchSyncError);
     }, 250);
 }
 
 export function waitForProfileSync() {
     return profileReady;
+}
+
+export async function ensureUserProfileDocument(firebaseConfig, user) {
+    if (!firebaseConfig?.apiKey || !user?.uid) return null;
+    const app = getFirebaseApp(firebaseConfig);
+    const database = getFirestore(app);
+    const reference = doc(database, 'profiles', user.uid);
+    const profileUser = { id: user.uid, email: user.email || '', displayName: user.displayName || '' };
+    const snapshot = await getDoc(reference);
+    if (!snapshot.exists()) {
+        const data = getInitialUserData(profileUser);
+        await setDoc(reference, {
+            ...data,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
+            auth: {
+                email: profileUser.email,
+                lastAuthenticatedAt: serverTimestamp()
+            }
+        });
+        return data;
+    }
+    const data = normalizeRemoteData(snapshot.data(), profileUser);
+    await setDoc(reference, {
+        ...data,
+        auth: {
+            email: profileUser.email,
+            lastAuthenticatedAt: serverTimestamp()
+        }
+    }, { merge: true });
+    return data;
 }
 
 export function initializeProfileSync(firebaseConfig, user) {
@@ -247,10 +326,10 @@ export function initializeProfileSync(firebaseConfig, user) {
             markProfileReady(data);
             return;
         }
-        writeCurrentData().catch((error) => window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error })));
+        writeCurrentData().catch(dispatchSyncError);
     }, (error) => {
         markProfileReady(formatUserData(profileUser));
-        window.dispatchEvent(new CustomEvent('gymtrack:sync-error', { detail: error }));
+        dispatchSyncError(error);
     });
 }
 
