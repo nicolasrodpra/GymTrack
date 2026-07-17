@@ -3,6 +3,8 @@ import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWith
 import { doc, getDoc, getFirestore, onSnapshot, serverTimestamp, setDoc } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
 
 const LOCAL_KEYS = ['profile', 'settings', 'routines', 'exercises', 'workouts'];
+const PLACEHOLDER_NAMES = new Set(['alex rivera', 'alex guerrero']);
+const PLACEHOLDER_EMAILS = new Set(['alex.rivera_performance@gymtrack.com']);
 let syncState = null;
 let queuedWrite = null;
 let applyingRemoteData = false;
@@ -76,6 +78,24 @@ function cleanEmail(value, fallback = '') {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : fallback;
 }
 
+function authName(user) {
+    return cleanText(user?.displayName, cleanText(user?.email?.split('@')[0], 'Usuario'));
+}
+
+function authEmail(user) {
+    return cleanEmail(user?.email, 'usuario@gymtrack.app');
+}
+
+function cleanProfileName(value, user) {
+    const name = cleanText(value);
+    return name && !PLACEHOLDER_NAMES.has(name.toLowerCase()) ? name : authName(user);
+}
+
+function cleanProfileEmail(value, user) {
+    const email = cleanEmail(value);
+    return email && !PLACEHOLDER_EMAILS.has(email) ? email : authEmail(user);
+}
+
 function cleanNumber(value, fallback = 0) {
     const number = Number(value);
     return Number.isFinite(number) ? Number(number.toFixed(2)) : fallback;
@@ -141,8 +161,8 @@ function normalizeWorkout(workout, index) {
 export function formatUserData(user) {
     const localProfile = readLocal('profile', {});
     const settings = readLocal('settings', {});
-    const name = cleanText(localProfile.name, cleanText(user?.email?.split('@')[0], 'Usuario'));
-    const email = cleanEmail(localProfile.email, cleanEmail(user?.email));
+    const name = cleanProfileName(localProfile.name, user);
+    const email = cleanProfileEmail(localProfile.email, user);
     const unit = settings.unit === 'lb' ? 'lb' : 'kg';
 
     return {
@@ -166,8 +186,8 @@ export function formatUserData(user) {
 }
 
 function getInitialUserData(user) {
-    const name = cleanText(user?.displayName, cleanText(user?.email?.split('@')[0], 'Usuario'));
-    const email = cleanEmail(user?.email);
+    const name = authName(user);
+    const email = authEmail(user);
     return {
         schemaVersion: 1,
         profile: {
@@ -191,13 +211,14 @@ function getInitialUserData(user) {
 function normalizeRemoteData(data, user) {
     const sourceProfile = data?.profile || {};
     const sourceSettings = data?.settings || {};
-    const name = cleanText(sourceProfile.name, cleanText(user?.email?.split('@')[0], 'Usuario'));
+    const name = cleanProfileName(sourceProfile.name, user);
+    const email = cleanProfileEmail(sourceProfile.email, user);
     const localFallback = formatUserData(user);
     return {
         schemaVersion: 1,
         profile: {
             name,
-            email: cleanEmail(sourceProfile.email, cleanEmail(user?.email)),
+            email,
             title: cleanText(sourceProfile.title, 'Atleta Pro'),
             initials: initials(name)
         },

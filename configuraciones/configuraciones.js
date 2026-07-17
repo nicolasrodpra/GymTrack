@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     let userProfile = storage.get('profile', {
-        name: 'Alex Rivera', 
-        email: 'alex.rivera_performance@gymtrack.com', 
-        title: 'Pro Member'
+        name: 'Usuario',
+        email: '',
+        title: 'Atleta Pro'
     });
 
     window.addEventListener('gymtrack:profile-updated', ({ detail }) => {
